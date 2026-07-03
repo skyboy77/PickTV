@@ -15,9 +15,7 @@ jobs:
           parse_mode: Markdown
           message: |
             🚀 **新版本发布！**
-            仓库：`${{ github.repository }}`
             版本标签：`${{ github.event.release.tag_name }}`
-            发布人：${{ github.actor }}
             标题：${{ github.event.release.name }}
             更新日志：
             ${{ github.event.release.body }}
