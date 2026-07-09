@@ -1,35 +1,22 @@
 name: Release Notify Telegram
 on:
   release:
-    types: [published] # 仅正式发布Release触发
+    types: [published]
 
 jobs:
   send_tg:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Release Message To Group
+      - name: Send Release To Group & Channel
         uses: cbrgm/telegram-github-action@v1
         with:
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          parse_mode: Markdown
+          # 两个ID用英文逗号隔开，中间不要加空格
+          to: ${{ secrets.TELEGRAM_CHAT_ID }},${{ secrets.TG_CHAT_CHANNEL }}
+          parse_mode: HTML
           message: |
-            🚀 **新版本发布！**
-            版本标签：`${{ github.event.release.tag_name }}`
-            标题：${{ github.event.release.name }}
-            更新日志：
-            ${{ github.event.release.body }}
-            下载地址：${{ github.event.release.html_url }}
-
-      - name: Send Release Message To Channel
-        uses: cbrgm/telegram-github-action@v1
-        with:
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          to: ${{ secrets.TG_CHAT_CHANNEL }}
-          parse_mode: Markdown
-          message: |
-            🚀 **新版本发布！**
-            版本标签：`${{ github.event.release.tag_name }}`
+            🚀 <b>新版本发布！</b>
+            版本标签：<code>${{ github.event.release.tag_name }}</code>
             标题：${{ github.event.release.name }}
             更新日志：
             ${{ github.event.release.body }}
